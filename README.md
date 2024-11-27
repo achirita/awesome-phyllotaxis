@@ -173,4 +173,46 @@ planarPhyllotaxis({organs: 100, outerRadius: 15, distribution: 0.7})
   <img src="https://github.com/user-attachments/assets/47e82999-10dc-4100-9278-5719454a572f" />
 </p>
 
+### Adding depth to the pattern
 
+To give our phyllotaxis pattern a more realistic, three-dimensional appearance, we can adjust the z position of each organ. One way to do this is to use a function that approximates the curvature of a flower head.
+
+In this case, we'll add a new parameter `height` which defines the maximum height of the curvature and use the function `Math.pow(index, 2)` to determine the z height of each organ. This will create a gentle, curved shape that resembles the natural growth of a flower.
+
+```javascript
+/**
+ * Planar phyllotaxis algorithm.
+ * 
+ * @param {object} options
+ * @param {number} options.organs - The number of organs in the arrangement.
+ * @param {number} [options.divergenceAngle=Math.PI * (3 - Math.sqrt(5))] - The divergence angle between organs (in radians). Defaults to the golden angle.
+ * @param {number} [options.innerRadius=0] - Distance from the center at which the first organ is placed. Defaults to 0.
+ * @param {number} options.outerRadius - The total radius of the generated pattern. outerRadius must be grater than innerRadius.
+ * @param {number} [options.height=0] - The max height of the organs in the arrangement.
+ * @param {number} [options.distribution=0.5] - The organ distribution.
+ * @return {Object[]} - An array of 2D points representing the phyllotaxis arrangement.
+ */
+const planarPhyllotaxis = ({organs, divergenceAngle = Math.PI * (3 - Math.sqrt(5)), innerRadius = 0, outerRadius, height = 0, distribution = 0.5}) => {
+  const points = [];
+  const radiusConstant = (outerRadius - innerRadius) / Math.pow(organs - 1, distribution);
+  for (let index = 0; index < organs; index++) {
+    const angle = index * divergenceAngle;
+    const radius = innerRadius + radiusConstant * Math.pow(index, distribution);
+    points.push({
+      x: radius * Math.cos(angle),
+      y: radius * Math.sin(angle),
+      z: - (height / Math.pow(organs - 1, 2) * Math.pow(index, 2)),
+    });
+  }
+  return points;
+};
+
+planarPhyllotaxis({organs: 300, outerRadius: 25, height: 7})
+  .forEach(point => scene.add(makeSphere({radius: 1, center: point})));
+```
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/456f9b15-6ffa-483a-9758-9606bfb02497" />
+</p>
+
+Of course there are many other mathematical functions which can be used instead of $index^2$. Feel free to play around until you find something that suits your use case.
