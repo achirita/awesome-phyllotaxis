@@ -230,8 +230,8 @@ The cylindrical model uses the following formula to determine the x, y and z coo
  * @param {object} options
  * @param {number} options.organs - The number of organs in the arrangement.
  * @param {number} [options.divergenceAngle=Math.PI * (3 - Math.sqrt(5))] - The divergence angle between organs (in radians). Defaults to the golden angle.
- * @param {number} radius - The cylinder radius.
- * @param {number} height - The cylinder height.
+ * @param {number} options.radius - The cylinder radius.
+ * @param {number} options.height - The cylinder height.
  * @return {Object[]} - An array of 3D points representing the phyllotaxis arrangement.
  */
 const cylindricalPhyllotaxis = ({organs, divergenceAngle = Math.PI * (3 - Math.sqrt(5)), radius, height}) => {
@@ -268,9 +268,9 @@ We will start by defining the `radiusConstant` as `radius + amplitude * Math.sin
  * @param {object} options
  * @param {number} options.organs - The number of organs in the arrangement.
  * @param {number} [options.divergenceAngle=Math.PI * (3 - Math.sqrt(5))] - The divergence angle between organs (in radians). Defaults to the golden angle.
- * @param {number} radius - The cylinder radius.
- * @param {number} height - The cylinder height.
- * @param {number} [amplitude=1] - Wave pattern amplitude. Defaults to 1.
+ * @param {number} options.radius - The cylinder radius.
+ * @param {number} options.height - The cylinder height.
+ * @param {number} [options.amplitude=1] - Wave pattern amplitude. Defaults to 1.
  * @return {Object[]} - An array of 3D points representing the phyllotaxis arrangement.
  */
 const cylindricalPhyllotaxis = ({organs, divergenceAngle = Math.PI * (3 - Math.sqrt(5)), radius, height, amplitude = 1}) => {
@@ -299,9 +299,48 @@ cylindricalPhyllotaxis({organs: 200, radius: 5, height: 20})
 
 The conical model can be thought of as a variation of the cylidrical model in which the radius decreases (or increases) by a certain amount for each organ placed.
 
-```javascript
+Two new parameters have been added to the vanilla cylindrical model - `baseRadius` and `topRadius`. Depending on the values of these 2 parameters we have the following scenarios:
+- $baseRadius > topRadius$ - frustum (the base portion of a cone obtained by cutting the apex portion with a plane parallel to the base).
+- $topRadius = 0$ - cone
+- $baseRadius < topRadius$ - inverted cone
+- $baseRadius > 0, topRadius < 0$ (or viceverse) - double cone
+- $baseRadius = topRadius$ - cylinder
 
+```javascript
+/**
+ * Conical phyllotaxis algorithm.
+ * 
+ * @param {object} options
+ * @param {number} options.organs - The number of organs in the arrangement.
+ * @param {number} [options.divergenceAngle=Math.PI * (3 - Math.sqrt(5))] - The divergence angle between organs (in radians). Defaults to the golden angle.
+ * @param {number} options.baseRadius - The cone base radius.
+ * @param {number} [options.topRadius=0] - The cone top radius.
+ * @param {number} options.height - The cylinder height.
+ * @return {Object[]} - An array of 3D points representing the phyllotaxis arrangement.
+ */
+const conicalPhyllotaxis = ({organs, divergenceAngle = Math.PI * (3 - Math.sqrt(5)), baseRadius, topRadius = 0, height}) => {
+  const points = [];
+  for (let index = 0; index < organs; index++) {
+    const angle = index * divergenceAngle;
+    const radiusConstant = baseRadius - (baseRadius - topRadius) * index / organs;
+    points.push({
+      x: radiusConstant * Math.cos(angle),
+      y: radiusConstant * Math.sin(angle),
+      z: height * index / organs, 
+    });
+  }
+  return points;
+};
+
+conicalPhyllotaxis({organs: 200, baseRadius: 5, topRadius: 2, height: 20})
+  .forEach(point => scene.add(makeSphere({radius: 1, center: point})));
 ```
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/01657327-ba6d-4f97-9890-71c3fc437696" />
+</p>
+
+**Note:** The main drawback of this model is that the density of points at the apex is quite high.
 
 # Resources
 - [Algorithmic Botany - Chapter 4](https://algorithmicbotany.org/papers/abop/abop-ch4.pdf)
