@@ -2,8 +2,6 @@
 
 ## The planar phyllotaxis algorithm
 
-### Vanilla implementation
-
 As we explore the fascinating world of phyllotaxis, we'll start with a fundamental concept: the planar phyllotaxis algorithm. This mathematical model helps us understand the intricate patterns found in nature, from the arrangement of leaves on a stem to the branching of trees.
 
 So, what is phyllotaxis, and how does the planar phyllotaxis algorithm work? Simply put, phyllotaxis is the study of the geometric patterns that occur in the growth of plants. The planar phyllotaxis algorithm is a mathematical formula that generates a two-dimensional spiral pattern, mimicking the way leaves or branches grow in a circular arrangement.
@@ -254,10 +252,48 @@ cylindricalPhyllotaxis({organs: 100, radius: 7, height: 15})
 ```
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/f3769bd3-a9fb-428f-9747-1ab36d189f0a" />
+  <img src="https://github.com/user-attachments/assets/d1cc1baa-b7b0-42c9-8872-343193be514e" />
 </p>
 
+### Wavy patterns on the z axis
 
+As described in the previous example, a constant radius value generates points distributed on the surface of a cylinder. Let's see what happens when we use various mathematical functions to change the radius value based on the organ index. 
+
+We will start by defining the `radiusConstant` as `radius + amplitude * Math.sin(index)`. This will introduce a repeating, onlulating pattern along the z axis. If the cylinder radius value is large enough the variation introduced by the `Math.sin` function will not be noticeable and that's the reason why the `amplitude` parameter was added.
+
+```javascript
+/**
+ * Cylindrical phyllotaxis algorithm.
+ * 
+ * @param {object} options
+ * @param {number} options.organs - The number of organs in the arrangement.
+ * @param {number} [options.divergenceAngle=Math.PI * (3 - Math.sqrt(5))] - The divergence angle between organs (in radians). Defaults to the golden angle.
+ * @param {number} radius - The cylinder radius.
+ * @param {number} height - The cylinder height.
+ * @param {number} [amplitude=1] - Wave pattern amplitude. Defaults to 1.
+ * @return {Object[]} - An array of 3D points representing the phyllotaxis arrangement.
+ */
+const cylindricalPhyllotaxis = ({organs, divergenceAngle = Math.PI * (3 - Math.sqrt(5)), radius, height, amplitude = 1}) => {
+  const points = [];
+  for (let index = 0; index < organs; index++) {
+    const angle = index * divergenceAngle;
+    const radiusConstant = radius + amplitude * Math.sin(index);
+    points.push({
+      x: radiusConstant * Math.cos(angle),
+      y: radiusConstant * Math.sin(angle),
+      z: height * index / organs,
+    });
+  }
+  return points;
+};
+
+cylindricalPhyllotaxis({organs: 200, radius: 5, height: 20})
+  .forEach(point => scene.add(makeSphere({radius: 1, center: point})));
+```
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/7a4f647d-afd0-428e-a9d3-bc9c04791dc9" />
+</p>
 
 # Resources
 - [Algorithmic Botany - Chapter 4](https://algorithmicbotany.org/papers/abop/abop-ch4.pdf)
