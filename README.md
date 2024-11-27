@@ -1,6 +1,6 @@
 # An exploration of various phyllotaxis algorithms
 
-## The planar phyllotaxis algorithm
+## The planar model
 
 As we explore the fascinating world of phyllotaxis, we'll start with a fundamental concept: the planar phyllotaxis algorithm. This mathematical model helps us understand the intricate patterns found in nature, from the arrangement of leaves on a stem to the branching of trees.
 
@@ -217,7 +217,7 @@ planarPhyllotaxis({organs: 300, outerRadius: 25, height: 7})
 
 Of course there are many other mathematical functions which can be used instead of $index^2$. Feel free to play around until you find something that suits your use case.
 
-## The cylindrical phyllotaxis algorithm
+## The cylindrical model
 
 The cylindrical phyllotaxis model is a mathematical representation of the growth patterns found in plants with cylindrical or columnar shapes, such as cacti and succulents. By introducing a linear function to increase the Z coordinate value, the cylindrical phyllotaxis model simulates the growth of plants with a vertical axis.
 
@@ -294,6 +294,14 @@ cylindricalPhyllotaxis({organs: 200, radius: 5, height: 20})
 <p align="center">
   <img src="https://github.com/user-attachments/assets/7a4f647d-afd0-428e-a9d3-bc9c04791dc9" />
 </p>
+
+## The conical model
+
+The conical model can be thought of as a variation of the cylidrical model in which the radius decreases (or increases) by a certain amount for each organ placed.
+
+```javascript
+
+```
 
 # Resources
 - [Algorithmic Botany - Chapter 4](https://algorithmicbotany.org/papers/abop/abop-ch4.pdf)
