@@ -342,6 +342,43 @@ conicalPhyllotaxis({organs: 200, baseRadius: 5, topRadius: 2, height: 20})
 
 **Note:** The main drawback of this model is that the density of points at the apex is quite high.
 
+## The spherical model
+
+Similar to the other phyllotaxis models we've explored so far, the spherical model uses the same basic concepts, but relies on the spherical coordinates formula for determining the position of each x, y and z point of the pattern.
+
+```javascript
+/**
+ * Spherical phyllotaxis algorithm.
+ * 
+ * @param {object} options
+ * @param {number} options.organs - The number of organs in the arrangement.
+ * @param {number} [options.divergenceAngle=Math.PI * (3 - Math.sqrt(5))] - The divergence angle between organs (in radians). Defaults to the golden angle.
+ * @param {number} options.radius - The sphere radius.
+ * @return {Object[]} - An array of 3D points representing the phyllotaxis arrangement.
+ */
+const sphericalPhyllotaxis = ({organs, divergenceAngle = 137.5, radius}) => {
+  const points = [];
+  for (let index = 0; index < organs; index++) {
+    const phi = index * divergenceAngle;
+    const theta = Math.acos(1 - 2 * (index / (organs - 1)));
+    points.push({
+      x: radius * Math.sin(theta) * Math.cos(phi * Math.PI / 180),
+      y: radius * Math.sin(theta) * Math.sin(phi * Math.PI / 180),
+      z: radius * Math.cos(theta),
+    });
+  }
+  return points;
+};
+
+sphericalPhyllotaxis({organs: 200, radius: 7})
+  .forEach(point => scene.add(makeSphere({radius: 1, center: point})));
+```
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/5748a63c-c084-4a56-8fe6-cf688ebb02c7" />
+</p>
+
+
 # Resources
 - [Algorithmic Botany - Chapter 4](https://algorithmicbotany.org/papers/abop/abop-ch4.pdf)
 - [Algorithmic Botany - The use of positional information in the modeling of plants](https://algorithmicbotany.org/papers/sigcourse.2003/2-27-positional.pdf)
