@@ -46,8 +46,13 @@ const planarPhyllotaxis = ({organs, divergenceAngle = Math.PI * (3 - Math.sqrt(5
   return points;
 };
 
-const points = planarPhyllotaxis({organs: 100, radiusConstant: 1.2});
-points.forEach(point => scene.add(makeSphere({radius: 1, center: point})));
+planarPhyllotaxis({organs: 100, radiusConstant: 1.2})
+  .forEach(point => scene.add(makeSphere({radius: 1, center: point})));
 ```
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/6da802ef-42f6-44ac-a111-36b6eef7ebe9" />
+</p>
+
 
 
