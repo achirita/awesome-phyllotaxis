@@ -390,10 +390,10 @@ Starting with the vanilla spherical model, we can limit "how much" of the sphere
  * @param {number} options.organs - The number of organs in the arrangement.
  * @param {number} [options.divergenceAngle=Math.PI * (3 - Math.sqrt(5))] - The divergence angle between organs (in radians). Defaults to the golden angle.
  * @param {number} options.radius - The sphere radius.
- * @param {number} options.ratio - The ratio of the sphere that will be used to generate (starting from the top).
+ * @param {number} [options.ratio=1] - The ratio of the sphere that will be used to generate (starting from the top). Defaults to 1.
  * @return {Object[]} - An array of 3D points representing the phyllotaxis arrangement.
  */
-const sphericalPhyllotaxis = ({organs, divergenceAngle = 137.5, radius, ratio}) => {
+const sphericalPhyllotaxis = ({organs, divergenceAngle = 137.5, radius, ratio = 1}) => {
   const points = [];
   for (let index = 0; index < organs; index++) {
     const phi = index * divergenceAngle;
