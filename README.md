@@ -415,6 +415,47 @@ sphericalPhyllotaxis({organs: 200, radius: 7, ratio: 0.3})
   <img src="https://github.com/user-attachments/assets/003f218a-5f06-4f04-903c-7ff0e7c48be9" />
 </p>
 
+### Ellipsoid
+
+If we start from the vanilla spherical model, but allow for different radii for the x, y and z axes we end up with the phyllotaxis pattern on the surface of an ellipsoid.
+
+```javascript
+/**
+ * Spherical phyllotaxis algorithm.
+ * 
+ * @param {object} options
+ * @param {number} options.organs - The number of organs in the arrangement.
+ * @param {number} [options.divergenceAngle=Math.PI * (3 - Math.sqrt(5))] - The divergence angle between organs (in radians). Defaults to the golden angle.
+ * @param {object} options.radius - The sphere radius.
+ * @param {number} options.radius.x - The sphere radius on the x axis.
+ * @param {number} options.radius.y - The sphere radius on the y axis.
+ * @param {number} options.radius.z - The sphere radius on the z axis.
+ * @param {number} [options.ratio=1] - The ratio of the sphere that will be used to generate (starting from the top). Defaults to 1.
+ * @return {Object[]} - An array of 3D points representing the phyllotaxis arrangement.
+ */
+const sphericalPhyllotaxis = ({organs, divergenceAngle = 137.5, radius, ratio = 1}) => {
+  const points = [];
+  for (let index = 0; index < organs; index++) {
+    const phi = index * divergenceAngle;
+    const theta = Math.acos(1 - 2 * (index / (organs - 1))) / (1 / ratio);
+    points.push({
+      x: radius.x * Math.sin(theta) * Math.cos(phi * Math.PI / 180),
+      y: radius.y * Math.sin(theta) * Math.sin(phi * Math.PI / 180),
+      z: radius.z * Math.cos(theta),
+    });
+  }
+  return points;
+};
+
+sphericalPhyllotaxis({organs: 200, radius: {x: 3, y: 5, z: 7}})
+	.forEach(point => scene.add(makeSphere({radius: 1, center: point})));
+```
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/1128fd5f-12d9-40e6-97c4-4179b6b0dd1d" />
+</p>
+
+
 # Resources
 - [Algorithmic Botany - Chapter 4](https://algorithmicbotany.org/papers/abop/abop-ch4.pdf)
 - [Algorithmic Botany - The use of positional information in the modeling of plants](https://algorithmicbotany.org/papers/sigcourse.2003/2-27-positional.pdf)
