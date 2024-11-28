@@ -297,7 +297,7 @@ cylindricalPhyllotaxis({organs: 200, radius: 5, height: 20})
 
 ## The conical model
 
-The conical model can be thought of as a variation of the cylidrical model in which the radius decreases (or increases) by a certain amount for each organ placed.
+The conical model can be thought of as a generalization of the cylidrical model in which the radius decreases (or increases) by a certain amount for each organ placed.
 
 Two new parameters have been added to the vanilla cylindrical model - `baseRadius` and `topRadius`. Depending on the values of these 2 parameters we have the following scenarios:
 - $baseRadius > topRadius$ - frustum (the base portion of a cone obtained by cutting the apex portion with a plane parallel to the base).
@@ -344,7 +344,7 @@ conicalPhyllotaxis({organs: 200, baseRadius: 5, topRadius: 2, height: 20})
 
 ## The spherical model
 
-Similar to the other phyllotaxis models we've explored so far, the spherical model uses the same basic concepts, but relies on the spherical coordinates formula for determining the position of each x, y and z point of the pattern.
+Similar to the other phyllotaxis models we've explored so far, the spherical model uses the same basic concepts, but relies on the spherical coordinates formula for determining the x, y and z coordinates of each point of the pattern.
 
 ```javascript
 /**
@@ -378,6 +378,42 @@ sphericalPhyllotaxis({organs: 200, radius: 7})
   <img src="https://github.com/user-attachments/assets/5748a63c-c084-4a56-8fe6-cf688ebb02c7" />
 </p>
 
+### Spherical cap
+
+Starting with the vanilla spherical model, we can limit "how much" of the sphere is used when generating the pattern. To this end we've added a new parameter `ratio` which should have values in the $[0, 1]$ interval and describes how far down the z axis the sphere is cut off.
+
+```javascript
+/**
+ * Spherical phyllotaxis algorithm.
+ * 
+ * @param {object} options
+ * @param {number} options.organs - The number of organs in the arrangement.
+ * @param {number} [options.divergenceAngle=Math.PI * (3 - Math.sqrt(5))] - The divergence angle between organs (in radians). Defaults to the golden angle.
+ * @param {number} options.radius - The sphere radius.
+ * @param {number} options.ratio - The ratio of the sphere that will be used to generate (starting from the top).
+ * @return {Object[]} - An array of 3D points representing the phyllotaxis arrangement.
+ */
+const sphericalPhyllotaxis = ({organs, divergenceAngle = 137.5, radius, ratio}) => {
+  const points = [];
+  for (let index = 0; index < organs; index++) {
+    const phi = index * divergenceAngle;
+    const theta = Math.acos(1 - 2 * (index / (organs - 1))) / (1 / ratio);
+    points.push({
+      x: radius * Math.sin(theta) * Math.cos(phi * Math.PI / 180),
+      y: radius * Math.sin(theta) * Math.sin(phi * Math.PI / 180),
+      z: radius * Math.cos(theta),
+    });
+  }
+  return points;
+};
+
+sphericalPhyllotaxis({organs: 200, radius: 7, ratio: 0.3})
+	.forEach(point => scene.add(makeSphere({radius: 1, center: point})));
+```
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/003f218a-5f06-4f04-903c-7ff0e7c48be9" />
+</p>
 
 # Resources
 - [Algorithmic Botany - Chapter 4](https://algorithmicbotany.org/papers/abop/abop-ch4.pdf)
