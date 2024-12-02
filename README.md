@@ -500,6 +500,61 @@ surfaceOfRevolutionPhyllotaxis({curve: curve, organs: 300})
   <img src="https://github.com/user-attachments/assets/c1450e12-53d1-4616-a98f-de82745630cf" />
 </p>
 
+### Compact Patterns
+
+The compact variant of the surface of revolution phyllotaxis takes a more dynamic approach to distributing organs on the surface of a revolution. Instead of specifying a fixed number of organs, this variant allows users to define the size of each organ (e.g., the radius of a sphere encompassing the organ). The algorithm then determines the placement of organs based on the available surface area, ensuring efficient packing and realistic spacing.
+
+```javascript
+/**
+ * Surface of revolution phyllotaxis algorithm.
+ * 
+ * @param {object} options
+ * @param {object} options.curve - The Besier curve used to generate the surface of revolution.
+ * @param {number} options.organSize - The radius of the sphere encompasing the organ.
+ * @return {Object[]} - An array of 3D points representing the phyllotaxis arrangement.
+ */
+const surfaceOfRevolutionPhyllotaxis = ({curve, organSize}) => {
+  const points = [];
+  const divergenceAngle = Math.PI * (3 - Math.sqrt(5));
+  const curveLength = curve.getLength();
+  const deltaS = 0.001;
+  
+  let arcLength = 0;
+  let area = 0;
+  let index = 0;
+  let position;
+
+  while (arcLength < curveLength) {
+    while (area < 1 && arcLength < curveLength) {
+      // this is a hackish way of getting a point that's at a specific distance away from the start point
+      // curve.getPoint(..) expects a value in the [0, 1] interval, but the algorithm uses a value in the [0, curve.getLength()] interval
+      position = curve.getPoint(curve.getUtoTmapping(null, arcLength));
+      area += ((2 * position.x) / Math.pow(organSize, 2)) * deltaS;
+      arcLength += deltaS;
+    }
+    area -= 1;
+    const rotated = position.applyAxisAngle(new THREE.Vector3(0, 0, 1), index * divergenceAngle);
+    points.push(rotated);
+    index++;
+  }
+  
+  return points;
+};
+
+const curve = new THREE.QuadraticBezierCurve3(
+	new THREE.Vector3(10, 0, 0),
+	new THREE.Vector3(20, 0, 20),
+	new THREE.Vector3(10, 0, 20)
+);
+
+surfaceOfRevolutionPhyllotaxis({curve: curve, organSize: 1.5})
+  .forEach(point => scene.add(makeSphere({radius: 1.5, center: point})));
+```
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/c1450e12-53d1-4616-a98f-de82745630cf" />
+</p>
+
 # Resources
 - [Algorithmic Botany - Chapter 4](https://algorithmicbotany.org/papers/abop/abop-ch4.pdf)
 - [Algorithmic Botany - The use of positional information in the modeling of plants](https://algorithmicbotany.org/papers/sigcourse.2003/2-27-positional.pdf)
