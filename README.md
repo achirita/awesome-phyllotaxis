@@ -1,15 +1,20 @@
-# An exploration of various phyllotaxis algorithms
+# Introduction to Phyllotaxis
 
-## The planar model
+Phyllotaxis, derived from the Greek words "phyllon" (leaf) and "taxis" (arrangement), is the study of the spatial patterns in which leaves, seeds, or other botanical structures grow. These patterns are not just aesthetically pleasing; they are also a result of optimized growth strategies in nature. For instance, the spiral arrangement of sunflower seeds maximizes packing efficiency, allowing the plant to use space and resources effectively.
 
-As we explore the fascinating world of phyllotaxis, we'll start with a fundamental concept: the planar phyllotaxis algorithm. This mathematical model helps us understand the intricate patterns found in nature, from the arrangement of leaves on a stem to the branching of trees.
+At its core, phyllotaxis reveals the interplay between biological processes and mathematical principles. The golden angle—approximately 137.5°—and Fibonacci numbers frequently appear in phyllotaxis, creating spirals that are both functional and mesmerizing. These principles not only enhance our understanding of plant growth but also inspire applications in art, architecture, and computational modeling.
 
-So, what is phyllotaxis, and how does the planar phyllotaxis algorithm work? Simply put, phyllotaxis is the study of the geometric patterns that occur in the growth of plants. The planar phyllotaxis algorithm is a mathematical formula that generates a two-dimensional spiral pattern, mimicking the way leaves or branches grow in a circular arrangement.
-
-Throughout this guide we'll use vanilla javascript and three.js to implement these algorithms. 
+In this guide, we will delve into phyllotaxis algorithms and their visualization using JavaScript and three.js. Starting with the planar model and expanding into three-dimensional variations, we’ll explore how these algorithms recreate nature's patterns with remarkable precision. Whether you’re a botanist, a programmer, or simply a lover of nature’s beauty, this journey through the mathematics of growth promises to be an engaging exploration.
 
 Setting up a three.js project is out of scope for this exploration. We'll assume we have a basic scene setup and a function called `makeSphere` which can create a sphere centered around a 3D point in space, with a particular radius.
 
+## The Planar Model
+
+### The Basics
+
+Phyllotaxis patterns often start with a two-dimensional representation, capturing the essence of how plants arrange structures like seeds or leaves in a flat spiral. The planar phyllotaxis algorithm models this arrangement using simple polar coordinates. Each point on the spiral represents an "organ"—a seed, leaf, or similar unit—calculated based on its position in the sequence, a divergence angle, and a scaling factor.
+
+The divergence angle plays a pivotal role in determining the spiral's appearance. The golden angle, approximately 137.5°, is the most commonly used value. This angle ensures a distribution that avoids overlaps while maintaining symmetry, a phenomenon seen in sunflowers and daisies. The radius at which each point is placed grows proportionally to the square root of its index, creating the outward expansion typical of natural spirals.
 
 ```javascript
 /**
@@ -43,13 +48,13 @@ planarPhyllotaxis({organs: 100, radiusConstant: 1.2})
   <img src="https://github.com/user-attachments/assets/6da802ef-42f6-44ac-a111-36b6eef7ebe9" />
 </p>
 
-Let's break down the code snippet provided earlier. The `planarPhyllotaxis` function takes three main parameters: `organs`, `divergenceAngle`, and `radiusConstant`. Think of `organs` as the number of leaves or branches you want to generate. The `divergenceAngle` is the angle between each leaf or branch, and the `radiusConstant` controls how quickly the spiral pattern grows.
+Phyllotaxis patterns are as versatile as they are beautiful, and small tweaks to the base algorithm can create entirely new visual effects. In the next sections, we explore modifications that add depth and flexibility to the planar model, including creating an empty central area, constraining the outer radius, controlling point distribution and adding depth.
 
-The algorithm uses a simple loop to calculate the position of each point based on these parameters. The x and y coordinates of each point are calculated using the polar coordinates formula $\phi = n ∗ 137.5\degree, r = c\sqrt{n}$. The radius of the spiral increases as the index of the point increases, creating a beautiful and intricate pattern.
+### Introducing an Empty Area Around the Center
 
-### Introducing an empty area around the center
+In nature, certain phyllotaxis patterns feature a central void, such as the hollow center of some flower heads. To simulate this, we can introduce an inner radius parameter to the algorithm. This shifts the starting point of the spiral outward, leaving a circular empty area in the center. The inner radius can be adjusted to control the size of the void.
 
-In some cases, having an empty area around the center of the phyllotaxis pattern can be beneficial. This can be achieved by introducing a inner radius to our implementation. The inner radius will shift the spiral pattern outward, creating a circular empty space at the center.
+This modification is especially useful for creating patterns that mimic plant species with defined central structures, or for artistic purposes where a focal point is desired. The algorithm remains fundamentally the same, but the inclusion of the inner radius parameter highlights the adaptability of the model.
 
 ```javascript
 /**
@@ -84,11 +89,11 @@ planarPhyllotaxis({organs: 100, innerRadius: 5, radiusConstant: 1})
   <img src="https://github.com/user-attachments/assets/f0ac53ca-c834-4e09-82f2-b8f14bded1c2" />
 </p>
 
-### Constraining the outer radius of the pattern
+### Constraining the Outer Radius of the Pattern
 
-To make the phyllotaxis pattern more flexible and useful, we need to introduce a way to control its overall size. Currently, the outer radius of the pattern is directly proportional to the number of organs. As we add more organs, the outer radius increases.
+Without constraints, the size of the spiral expands with the number of points (organs), which may not always be desirable. To maintain a fixed boundary for the pattern, we can introduce an outer radius parameter. By adjusting the scaling factor (radius constant), we ensure that the spiral grows proportionally while remaining within the specified boundary.
 
-To fix this, we'll introduce a new parameter `outerRadius` that specifies the desired maximum radius of the pattern. By doing so, we can calculate the `radiusConstant` in a way that ensures the maximum radius value is constant, regardless of the number of organs.
+This feature is particularly useful for applications where the pattern must fit within a defined area, such as digital art, data visualization, or physical designs. It provides a balance between organic growth and structural control.
 
 ```javascript
 /**
@@ -126,17 +131,15 @@ planarPhyllotaxis({organs: 100, innerRadius: 10, outerRadius: 25})
 
 The image above includes a circle with a radius equal to the outer radius of the pattern. This illustrates the fact that none of the sphere center points extend outside of the outer radius.
 
-### Changing the point distribution 
+### Changing the Point Distribution
 
-The current radius formula, which uses `Math.sqrt(index)`, generates evenly distributed points. However, we can explore other options to create different point distributions.
+The current planar algorithm distributes points evenly based on the square root of their index. However, by altering this distribution, we can create unique patterns that vary in density. Introducing a `distribution` parameter allows us to control how the radius changes with the index, producing a wide range of effects.
 
-One approach is to replace `Math.sqrt(index)` with `Math.pow(index, distribution)`, where `distribution` is a new parameter that controls the rate at which the radius increases as the index grows. This change allows us to adjust the density of points in the phyllotaxis pattern.
+For example:
 
-The `distribution` parameter has a significant impact on the resulting phyllotaxis pattern. Here are some scenarios to consider:
-
-- `distribution` = 0.5: This value produces the same evenly distributed points as before, using the square root of the index.
-- `distribution` ∈ (0.5, 1]: In this range, points will be denser in the center of the pattern. As the distribution value approaches 1, the points will become more concentrated near the center.
-- `distribution` ∈ [0, 0.5): In this range, points will be denser towards the edge of the pattern. As the distribution value approaches 0, the points will become more sparse near the center and more concentrated near the edge.
+- A higher distribution value (in the 0.5 - 1 interval) concentrates points toward the center, resembling a dense cluster.
+- A lower distribution value (in the 0 - 0.5 interval) pushes points toward the edges, creating a sparse core and a denser periphery.
+These variations mimic different natural growth patterns and provide creative flexibility, enabling simulations of plants with distinct structural properties or artistic patterns with tailored aesthetics.
 
 ```javascript
 /**
@@ -173,11 +176,13 @@ planarPhyllotaxis({organs: 100, outerRadius: 15, distribution: 0.7})
   <img src="https://github.com/user-attachments/assets/47e82999-10dc-4100-9278-5719454a572f" />
 </p>
 
-### Adding depth to the pattern
+### Adding Depth
 
-To give our phyllotaxis pattern a more realistic, three-dimensional appearance, we can adjust the z position of each organ. One way to do this is to use a function that approximates the curvature of a flower head.
+While planar phyllotaxis provides a beautiful two-dimensional representation, many natural structures grow in three dimensions. Adding depth to the pattern involves introducing a vertical dimension, which can simulate the curvature or height variations found in these real-world examples.
 
-In this case, we'll add a new parameter `height` which defines the maximum height of the curvature and use the function `Math.pow(index, 2)` to determine the z height of each organ. This will create a gentle, curved shape that resembles the natural growth of a flower.
+One approach is to gradually increase the z-coordinate of each organ in the pattern, creating a gentle slope or dome-like shape. For instance, the z-value can follow a quadratic function of the organ index, forming a parabolic curve that resembles the natural curvature of a flower head. This subtle addition adds realism and complexity to the visualizations.
+
+Depth also opens the door to creative exploration. Depending on the mathematical function applied to the z-axis, the pattern can take on diverse forms, from smooth domes to exaggerated peaks or even wave-like surfaces. These variations allow the algorithm to simulate a broader range of natural growth forms or to serve as a foundation for artistic designs.
 
 ```javascript
 /**
@@ -215,13 +220,11 @@ planarPhyllotaxis({organs: 300, outerRadius: 25, height: 7})
   <img src="https://github.com/user-attachments/assets/456f9b15-6ffa-483a-9758-9606bfb02497" />
 </p>
 
-Of course there are many other mathematical functions which can be used instead of $index^2$. Feel free to play around until you find something that suits your use case.
+## The Cylindrical Model
 
-## The cylindrical model
+The cylindrical phyllotaxis model extends the planar model along a vertical axis, resulting in points arranged around the surface of a cylinder. This model is particularly suited for simulating the growth of columnar plants, such as bamboo, cacti, or certain types of algae. Each organ is defined by its angular position on the circular cross-section and its height along the cylinder.
 
-The cylindrical phyllotaxis model is a mathematical representation of the growth patterns found in plants with cylindrical or columnar shapes, such as cacti and succulents. By introducing a linear function to increase the Z coordinate value, the cylindrical phyllotaxis model simulates the growth of plants with a vertical axis.
-
-The cylindrical model uses the following formula to determine the x, y and z coordinates of each point: $\phi = n ∗ 137.5, r = const, H = h * n$.
+The simplicity of this model lies in maintaining a constant radius for the cylinder while incrementing the z-coordinate for each organ. The result is a regular, helical arrangement that mimics the upward growth of plants. This straightforward approach also serves as a foundation for more complex modifications, such as introducing variations in radius or height.
 
 ```javascript
 /**
@@ -255,11 +258,11 @@ cylindricalPhyllotaxis({organs: 100, radius: 7, height: 15})
   <img src="https://github.com/user-attachments/assets/d1cc1baa-b7b0-42c9-8872-343193be514e" />
 </p>
 
-### Wavy patterns on the z axis
+### Wavy Patterns on the Z Axis
 
-As described in the previous example, a constant radius value generates points distributed on the surface of a cylinder. Let's see what happens when we use various mathematical functions to change the radius value based on the organ index. 
+Adding oscillations to the cylindrical phyllotaxis model introduces a wave-like variation along the vertical axis, resulting in a pattern that appears dynamic and organic. The key to this effect lies in varying the radius of the cylinder as a function of the organ index. By introducing a sinusoidal term to the radius calculation, we create a repeating pattern of expansion and contraction along the z-axis. 
 
-We will start by defining the `radiusConstant` as `radius + amplitude * Math.sin(index)`. This will introduce a repeating, onlulating pattern along the z axis. If the cylinder radius value is large enough the variation introduced by the `Math.sin` function will not be noticeable and that's the reason why the `amplitude` parameter was added.
+For example, a simple formula such as `radius + amplitude * Math.sin(index)` creates a smooth, oscillating effect. The `amplitude` controls the extent of these variations.
 
 ```javascript
 /**
@@ -295,16 +298,18 @@ cylindricalPhyllotaxis({organs: 200, radius: 5, height: 20})
   <img src="https://github.com/user-attachments/assets/7a4f647d-afd0-428e-a9d3-bc9c04791dc9" />
 </p>
 
-## The conical model
+## The Conical Model
 
-The conical model can be thought of as a generalization of the cylidrical model in which the radius decreases (or increases) by a certain amount for each organ placed.
+The conical model introduces a tapering effect to the cylindrical pattern, where the radius changes linearly from the base to the top.
 
-Two new parameters have been added to the vanilla cylindrical model - `baseRadius` and `topRadius`. Depending on the values of these 2 parameters we have the following scenarios:
-- $baseRadius > topRadius$ - frustum (the base portion of a cone obtained by cutting the apex portion with a plane parallel to the base).
-- $topRadius = 0$ - cone
-- $baseRadius < topRadius$ - inverted cone
-- $baseRadius > 0, topRadius < 0$ (or viceverse) - double cone
-- $baseRadius = topRadius$ - cylinder
+The flexibility of this model comes from its two radius parameters: the base radius and the top radius. By manipulating these values, we can create diverse shapes:
+
+- A cone if the top radius is zero.
+- An inverted cone if the base radius is smaller than the top radius.
+- A double cone if the base radius is greater than 0 and the top radius is lower than 0 (or viceversa).
+- A cylinder if the base radius is equal to the top radius.
+
+**Note:** The conical model often results in denser point distributions at the apex.
 
 ```javascript
 /**
@@ -340,11 +345,11 @@ conicalPhyllotaxis({organs: 200, baseRadius: 5, topRadius: 2, height: 20})
   <img src="https://github.com/user-attachments/assets/01657327-ba6d-4f97-9890-71c3fc437696" />
 </p>
 
-**Note:** The main drawback of this model is that the density of points at the apex is quite high.
+## The Spherical Model
 
-## The spherical model
+The spherical model takes the concepts of the planar and cylindrical algorithms and maps them onto the surface of a sphere.
 
-Similar to the other phyllotaxis models we've explored so far, the spherical model uses the same basic concepts, but relies on the spherical coordinates formula for determining the x, y and z coordinates of each point of the pattern.
+Points are calculated using spherical coordinates, with the divergence angle determining the rotation around the sphere and the elevation (latitude) set proportionally to the organ index. This creates an even, aesthetically pleasing distribution of points over the sphere’s surface.
 
 ```javascript
 /**
@@ -378,9 +383,11 @@ sphericalPhyllotaxis({organs: 200, radius: 7})
   <img src="https://github.com/user-attachments/assets/5748a63c-c084-4a56-8fe6-cf688ebb02c7" />
 </p>
 
-### Spherical cap
+### Spherical Cap
 
-Starting with the vanilla spherical model, we can limit "how much" of the sphere is used when generating the pattern. To this end we've added a new parameter `ratio` which should have values in the $[0, 1]$ interval and describes how far down the z axis the sphere is cut off.
+The spherical cap variation of the spherical phyllotaxis model allows us to focus on a portion of the sphere, producing patterns that mimic natural structures such as flower heads, mushroom caps, or domed shapes. By restricting the z-axis range, we essentially "slice" the sphere, retaining only the topmost portion for the arrangement of points.
+
+This is achieved by introducing a ratio parameter that determines how much of the sphere to include. A ratio of 1 uses the entire sphere, while a smaller value, such as 0.3, limits the pattern to a narrow cap.
 
 ```javascript
 /**
@@ -415,9 +422,11 @@ sphericalPhyllotaxis({organs: 200, radius: 7, ratio: 0.3})
   <img src="https://github.com/user-attachments/assets/003f218a-5f06-4f04-903c-7ff0e7c48be9" />
 </p>
 
-### Ellipsoid
+### Ellipsoids
 
-If we start from the vanilla spherical model, but allow for different radii for the x, y and z axes we end up with the phyllotaxis pattern on the surface of an ellipsoid.
+Expanding on the spherical model, we can stretch or compress the sphere along its axes to form an ellipsoid. This transformation results in patterns that align with the diverse range of natural shapes, from elongated fruits like melons to flattened seed pods. The flexibility of the ellipsoid model lies in its ability to assign different radii for the x, y, and z axes.
+
+By introducing separate parameters for each axis, the algorithm enables precise control over the pattern's proportions.
 
 ```javascript
 /**
