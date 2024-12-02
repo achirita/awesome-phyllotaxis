@@ -464,6 +464,41 @@ sphericalPhyllotaxis({organs: 200, radius: {x: 3, y: 5, z: 7}})
   <img src="https://github.com/user-attachments/assets/1128fd5f-12d9-40e6-97c4-4179b6b0dd1d" />
 </p>
 
+## The Surface of Revolution Model
+
+In this model, a parametric curve—such as a Bézier curve—defines the profile of the shape to be revolved. The algorithm samples points along this curve and rotates them around a central axis using a specified divergence angle. This rotational mapping creates a surface of revolution, distributing points evenly across the generated shape.
+
+The divergence angle ensures that the points are spaced in a manner reminiscent of natural growth patterns, similar to earlier phyllotaxis models. However, the addition of a curve allows for much greater control over the underlying geometry, enabling the creation of organic or abstract forms beyond the capabilities of planar, cylindrical, or spherical models.
+
+Unlike earlier models that relied solely on mathematical formulas, this algorithm requires the use of a library capable of representing curves and sampling points along them. Additionally, it incorporates vector mathematics to manipulate points in three-dimensional space.
+
+```javascript
+/**
+ * Surface of revolution phyllotaxis algorithm.
+ * 
+ * @param {object} options
+ * @param {object} options.curve - The Besier curve used to generate the surface of revolution.
+ * @param {number} options.organs - The number of organs in the arrangement.
+ * @param {number} [options.divergenceAngle=Math.PI * (3 - Math.sqrt(5))] - The divergence angle between organs (in radians). Defaults to the golden angle.
+ * @return {Object[]} - An array of 3D points representing the phyllotaxis arrangement.
+ */
+const surfaceOfRevolutionPhyllotaxis = ({curve, organs, divergenceAngle = Math.PI * (3 - Math.sqrt(5))}) => {
+  return curve.getSpacedPoints(organs).map((point, index) => point.applyAxisAngle(new THREE.Vector3(0, 0, 1), index * divergenceAngle));
+};
+
+const curve = new THREE.QuadraticBezierCurve3(
+	new THREE.Vector3(10, 0, 0),
+	new THREE.Vector3(20, 0, 20),
+	new THREE.Vector3(10, 0, 20)
+);
+
+surfaceOfRevolutionPhyllotaxis({curve: curve, organs: 300})
+  .forEach(point => scene.add(makeSphere({radius: 1.5, center: point})));
+```
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/c1450e12-53d1-4616-a98f-de82745630cf" />
+</p>
 
 # Resources
 - [Algorithmic Botany - Chapter 4](https://algorithmicbotany.org/papers/abop/abop-ch4.pdf)
