@@ -267,7 +267,7 @@ cylindricalPhyllotaxis({organs: 100, radius: 7, height: 15})
   .forEach(point => scene.add(makeSphere({radius: 1, center: point})));
 ```
 
-<p class="codepen" data-height="300" data-default-tab="result" data-slug-hash="WbNwJQz" data-pen-title="Cylindrical phyllotaxis" data-preview="true" data-editable="true" data-user="surubel" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+<p class="codepen" data-height="550" data-default-tab="result" data-slug-hash="WbNwJQz" data-pen-title="Cylindrical phyllotaxis" data-preview="true" data-editable="true" data-user="surubel" style="height: 550px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
   <span>See the Pen <a href="https://codepen.io/surubel/pen/WbNwJQz">
   Cylindrical phyllotaxis</a> by Alexandru Chirita (<a href="https://codepen.io/surubel">@surubel</a>)
   on <a href="https://codepen.io">CodePen</a>.</span>
