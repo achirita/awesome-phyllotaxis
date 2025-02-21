@@ -129,9 +129,12 @@ planarPhyllotaxis({organs: 100, innerRadius: 10, outerRadius: 25})
   .forEach(point => scene.add(makeSphere({radius: 1, center: point})));
 ```
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/3e35fbe2-6bed-4c97-8d1d-292fe12e3881" />
+<p class="codepen" data-height="300" data-default-tab="result" data-slug-hash="MYWyVxB" data-pen-title="Planar phyllotaxis - fixed radius" data-preview="true" data-editable="true" data-user="surubel" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/surubel/pen/MYWyVxB">
+  Planar phyllotaxis - fixed radius</a> by Alexandru Chirita (<a href="https://codepen.io/surubel">@surubel</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
 </p>
+<script async src="https://public.codepenassets.com/embed/index.js"></script>
 
 The image above includes a circle with a radius equal to the outer radius of the pattern. This illustrates the fact that none of the sphere center points extend outside of the outer radius.
 
