@@ -44,9 +44,12 @@ planarPhyllotaxis({organs: 100, radiusConstant: 1.2})
   .forEach(point => scene.add(makeSphere({radius: 1, center: point})));
 ```
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/6da802ef-42f6-44ac-a111-36b6eef7ebe9" />
+<p class="codepen" data-height="300" data-default-tab="result" data-slug-hash="VYwvmxJ" data-pen-title="Three.js template" data-preview="true" data-editable="true" data-user="surubel" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/surubel/pen/VYwvmxJ">
+  Three.js template</a> by Alexandru Chirita (<a href="https://codepen.io/surubel">@surubel</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
 </p>
+<script async src="https://public.codepenassets.com/embed/index.js"></script>
 
 Phyllotaxis patterns are as versatile as they are beautiful, and small tweaks to the base algorithm can create entirely new visual effects. In the next sections, we explore modifications that add depth and flexibility to the planar model, including creating an empty central area, constraining the outer radius, controlling point distribution and adding depth.
 
