@@ -6,8 +6,6 @@ At its core, phyllotaxis reveals the interplay between biological processes and 
 
 In this guide, we will delve into phyllotaxis algorithms and their visualization using JavaScript and three.js. Starting with the planar model and expanding into three-dimensional variations, we’ll explore how these algorithms recreate nature's patterns with remarkable precision. Whether you’re a botanist, a programmer, or simply a lover of nature’s beauty, this journey through the mathematics of growth promises to be an engaging exploration.
 
-Setting up a three.js project is out of scope for this exploration. We'll assume we have a basic scene setup and a function called `makeSphere` which can create a sphere centered around a 3D point in space, with a particular radius.
-
 ## The Planar Model
 
 ### The Basics
@@ -51,7 +49,6 @@ planarPhyllotaxis({organs: 100, radiusConstant: 1.2})
 </p>
 <script async src="https://public.codepenassets.com/embed/index.js"></script>
 
-
 Phyllotaxis patterns are as versatile as they are beautiful, and small tweaks to the base algorithm can create entirely new visual effects. In the next sections, we explore modifications that add depth and flexibility to the planar model, including creating an empty central area, constraining the outer radius, controlling point distribution and adding depth.
 
 ### Introducing an Empty Area Around the Center
@@ -89,9 +86,12 @@ planarPhyllotaxis({organs: 100, innerRadius: 5, radiusConstant: 1})
   .forEach(point => scene.add(makeSphere({radius: 1, center: point})));
 ```
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/f0ac53ca-c834-4e09-82f2-b8f14bded1c2" />
+<p class="codepen" data-height="550" data-default-tab="result" data-slug-hash="ByaKrGW" data-pen-title="Planar phyllotaxis - inner radius" data-preview="true" data-editable="true" data-user="surubel" style="height: 550px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/surubel/pen/ByaKrGW">
+  Planar phyllotaxis - inner radius</a> by Alexandru Chirita (<a href="https://codepen.io/surubel">@surubel</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
 </p>
+<script async src="https://public.codepenassets.com/embed/index.js"></script>
 
 ### Constraining the Outer Radius of the Pattern
 
