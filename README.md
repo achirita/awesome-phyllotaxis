@@ -44,9 +44,9 @@ planarPhyllotaxis({organs: 100, radiusConstant: 1.2})
   .forEach(point => scene.add(makeSphere({radius: 1, center: point})));
 ```
 
-<p class="codepen" data-height="550" data-default-tab="result" data-slug-hash="VYwvmxJ" data-pen-title="Three.js template" data-preview="true" data-editable="true" data-user="surubel" style="height: 550px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
-  <span>See the Pen <a href="https://codepen.io/surubel/pen/VYwvmxJ">
-  Three.js template</a> by Alexandru Chirita (<a href="https://codepen.io/surubel">@surubel</a>)
+<p class="codepen" data-height="550" data-default-tab="result" data-slug-hash="ByaKrVp" data-pen-title="Planar phyllotaxis - basic" data-preview="true" data-editable="true" data-user="surubel" style="height: 550px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/surubel/pen/ByaKrVp">
+  Planar phyllotaxis - basic</a> by Alexandru Chirita (<a href="https://codepen.io/surubel">@surubel</a>)
   on <a href="https://codepen.io">CodePen</a>.</span>
 </p>
 <script async src="https://public.codepenassets.com/embed/index.js"></script>
