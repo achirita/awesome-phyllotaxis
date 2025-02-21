@@ -179,9 +179,12 @@ planarPhyllotaxis({organs: 100, outerRadius: 15, distribution: 0.7})
   .forEach(point => scene.add(makeSphere({radius: 1, center: point})));
 ```
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/47e82999-10dc-4100-9278-5719454a572f" />
+<p class="codepen" data-height="550" data-default-tab="result" data-slug-hash="zxYqWVb" data-pen-title="Planar phyllotaxis - distribution" data-preview="true" data-editable="true" data-user="surubel" style="height: 550px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/surubel/pen/zxYqWVb">
+  Planar phyllotaxis - distribution</a> by Alexandru Chirita (<a href="https://codepen.io/surubel">@surubel</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
 </p>
+<script async src="https://public.codepenassets.com/embed/index.js"></script>
 
 ### Adding Depth
 
