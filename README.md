@@ -585,9 +585,12 @@ surfaceOfRevolutionPhyllotaxis({curve: curve, organSize: 1.5})
   .forEach(point => scene.add(makeSphere({radius: 1.5, center: point})));
 ```
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/c1450e12-53d1-4616-a98f-de82745630cf" />
+<p class="codepen" data-height="550" data-default-tab="result" data-slug-hash="XJWKKgE" data-pen-title="Surface of revolution phyllotaxis - compact" data-preview="true" data-editable="true" data-user="surubel" style="height: 550px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/surubel/pen/XJWKKgE">
+  Surface of revolution phyllotaxis - compact</a> by Alexandru Chirita (<a href="https://codepen.io/surubel">@surubel</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
 </p>
+<script async src="https://public.codepenassets.com/embed/index.js"></script>
 
 ### Compact Patterns with Dynamic Organ Size
 
