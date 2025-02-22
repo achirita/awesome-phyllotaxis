@@ -401,9 +401,12 @@ sphericalPhyllotaxis({organs: 200, radius: 7})
   .forEach(point => scene.add(makeSphere({radius: 1, center: point})));
 ```
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/5748a63c-c084-4a56-8fe6-cf688ebb02c7" />
+<p class="codepen" data-height="550" data-default-tab="result" data-slug-hash="xbxOOEz" data-pen-title="Spherical phyllotaxis" data-preview="true" data-editable="true" data-user="surubel" style="height: 550px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/surubel/pen/xbxOOEz">
+  Spherical phyllotaxis</a> by Alexandru Chirita (<a href="https://codepen.io/surubel">@surubel</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
 </p>
+<script async src="https://public.codepenassets.com/embed/index.js"></script>
 
 ### Spherical Cap
 
